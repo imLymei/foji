@@ -1,0 +1,20 @@
+{
+  "name": "foji",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "bin": {
+    "foji": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "imLymei",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  }
+}
