@@ -9,10 +9,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "automation",
+    "code"
+  ],
   "author": "imLymei",
+  "repository": {
+    "url": "https://github.com/imLymei/foji"
+  },
   "license": "MIT",
-  "description": "",
+  "description": "Forge your code in a new way.",
   "devDependencies": {
     "@types/node": "^20.12.12",
     "typescript": "^5.4.5"
