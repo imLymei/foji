@@ -18,7 +18,15 @@ Follow these instructions to quickly set up our CLI, either for immediate use or
 
 Before using our cli you will need [Node.js](https://nodejs.org/) installed.
 
-#### Forge it yourself
+### Use it
+
+1. Install it globally:
+
+```shell
+npm i foji -g
+```
+
+### Forge it yourself
 
 1. Clone the repository:
 
