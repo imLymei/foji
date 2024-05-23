@@ -8,7 +8,7 @@
     "outDir": "bin",
     "baseUrl": ".",
     "paths": {
-      "*": ["node_modules/*", "src/types/*"]
+      "*": ["node_modules/*"]
     },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
