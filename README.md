@@ -8,7 +8,9 @@ TODO
 
 ## Table of Contents
 
-TODO
+- [ ] Run custom codes
+- [ ] Create config file by command
+- [ ] Update config file by command
 
 ## Getting Started
 
