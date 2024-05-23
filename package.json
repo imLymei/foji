@@ -10,7 +10,8 @@
     "build": "tsc"
   },
   "files": [
-    "bin/"
+    "bin/",
+    ".npmignore"
   ],
   "keywords": [
     "cli",
