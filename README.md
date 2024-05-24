@@ -8,9 +8,13 @@ TODO
 
 ## Table of Contents
 
-- [ ] Run custom codes
+- [x] Run custom codes
 - [ ] Create config file by command
 - [ ] Update config file by command
+- [ ] Custom parameters
+- [ ] Customized conditional handler for parameters
+- [ ] `<isTrue ? --true : --false>`
+- [ ] `<customData ?? "default data">`
 
 ## Getting Started
 

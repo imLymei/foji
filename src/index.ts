@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import { helloWorld } from './lib/utils';
+import program from './command';
 
-helloWorld();
+program.parse();
