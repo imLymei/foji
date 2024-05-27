@@ -1,6 +1,13 @@
 import { Command } from 'commander';
 import { PROGRAM_DESCRIPTION, PROGRAM_NAME, PROGRAM_VERSION } from '../config';
-import { getConfig, logList, runCommand } from '../lib/utils';
+import {
+  CONFIG_FILE_PATH,
+  createConfig,
+  getConfig,
+  logList,
+  runCommand,
+} from '../lib/utils';
+import { createPromptModule } from 'inquirer';
 
 const program = new Command();
 
@@ -13,11 +20,42 @@ program
     'Scope that you want to run a command or get information'
   )
   .argument('[command]', 'Command that you want to run')
-  .action((scope, command) => {
+  .action(async (scope, command) => {
     const config = getConfig();
 
+    if (!config) {
+      const prompt = createPromptModule();
+
+      const answers = await prompt([
+        {
+          type: 'confirm',
+          name: 'createConfig',
+          message: 'You do not have a configuration file. Create one?',
+          default: true,
+        },
+      ]);
+
+      if (answers.createConfig) {
+        createConfig();
+      }
+      console.log(
+        answers.createConfig
+          ? `Configuration file created at "${CONFIG_FILE_PATH}"`
+          : `You can create your configuration file at "${CONFIG_FILE_PATH}"`
+      );
+
+      return;
+    }
+
     if (!scope) {
-      logList('scopes', Object.keys(config));
+      const scopes = Object.keys(config);
+
+      if (scopes.length === 0) {
+        console.log('No scope has been configured');
+        return;
+      }
+
+      logList('scopes', scopes);
       return;
     }
 
@@ -29,6 +67,11 @@ program
     }
 
     if (!command) {
+      if (Object.keys(scopeObject).length === 0) {
+        console.log('No command created at this scope');
+        return;
+      }
+
       logList('commands', scopeObject);
       return;
     }

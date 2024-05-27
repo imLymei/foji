@@ -6,23 +6,30 @@ import * as path from 'node:path';
 type Command = Record<string, string>;
 type Config = { [key: string]: Command };
 
-const USER_DIRECTORY = os.homedir();
-const CONFIG_DIRECTORY = path.join(USER_DIRECTORY, '.config');
-const CONFIG_FILE_NAME = 'foji.json';
-const CONFIG_FILE_PATH = path.join(CONFIG_DIRECTORY, CONFIG_FILE_NAME);
-const HAS_CONFIGURATION = fs.existsSync(
+export const USER_DIRECTORY = os.homedir();
+export const CONFIG_DIRECTORY = path.join(USER_DIRECTORY, '.config');
+export const CONFIG_FILE_NAME = 'foji.json';
+export const CONFIG_FILE_PATH = path.join(CONFIG_DIRECTORY, CONFIG_FILE_NAME);
+export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function getConfig(): Config {
-  if (!HAS_CONFIGURATION)
-    fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify({}));
+export function createConfig() {
+  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify({}));
+}
 
-  const configFile: Config = JSON.parse(
-    fs.readFileSync(CONFIG_FILE_PATH, 'utf-8')
-  );
+export function getConfig(): Config | undefined {
+  if (!HAS_CONFIGURATION) createConfig();
 
-  return configFile;
+  try {
+    const configFile: Config = JSON.parse(
+      fs.readFileSync(CONFIG_FILE_PATH, 'utf-8')
+    );
+
+    return configFile;
+  } catch (error) {
+    return;
+  }
 }
 
 export function logList(

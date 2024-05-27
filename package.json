@@ -24,10 +24,12 @@
   "license": "MIT",
   "description": "Forge your code in a new way.",
   "devDependencies": {
+    "@types/inquirer": "^9.0.7",
     "@types/node": "^20.12.12",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "inquirer": "^8.0.0"
   }
 }
