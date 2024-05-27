@@ -9,12 +9,12 @@ TODO
 ## Table of Contents
 
 - [x] Run custom codes
-- [ ] Create config file by command
-- [ ] Update config file by command
-- [ ] Custom parameters
-- [ ] Customized conditional handler for parameters
-- [ ] `<isTrue ? --true : --false>`
-- [ ] `<customData ?? "default data">`
+- [x] Create config file by command
+- [x] Update config file by command
+- [x] Custom parameters
+- [x] Customized conditional handler for parameters
+- [x] `<isTrue ? --true : --false>`
+- [x] `<customData ?? "default data">`
 
 ## Getting Started
 
