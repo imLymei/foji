@@ -33,7 +33,7 @@ Foji works based on `scopes` and `commands`. A scope is a context in which a set
 To run a `command`, use the `foji run` command followed by the `scope`, the command, and any `arguments` for the command:
 
 ```shell
-foji run [scope] [command] [args...]
+foji run <scope> <command> <args...>
 ```
 
 If you don't provide a `scope`, Foji will list all available scopes. If you provide a scope but no `command`, Foji will list all commands available in that scope.
