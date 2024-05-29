@@ -20,8 +20,8 @@ export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function createConfig() {
-  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify({}));
+export function createConfig(config: Config = {}) {
+  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
 }
 
 export function getConfig(): Config {
