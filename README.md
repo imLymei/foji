@@ -42,8 +42,17 @@ If you don't provide a `scope`, Foji will list all available scopes. If you prov
 
 Foji provides easy ways to add `commands` to the configuration file (or create it if it does not exist):
 
-- `foji add <scope> <command name> <command>`: Adds a new command to the configuration file at the specified scope. Foji will add the scope if it does not exist.
-- `foji rm <scope> <command name>`: Remove a command of the specified scope.
+To add a new command to the configuration file you can use the `add` command:
+
+```shell
+foji add <scope> <command name> <command>
+```
+
+To remove a command of a specified scope you can use the `remove` command
+
+```shell
+foji remove <scope> <command name>
+```
 
 ## Configuration file
 
