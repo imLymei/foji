@@ -4,11 +4,15 @@ Foji is a command-line interface (CLI) tool designed to help you automate and ma
 
 ## Features
 
-- Run custom codes
-- Handle custom parameters
-- Conditional handler for parameters
-- Support for default data
-- Support for optional data
+- [x] Run custom codes
+- [x] Handle custom parameters
+- [x] Conditional handler for arguments
+- [x] Support for default arguments
+- [x] Support for optional arguments
+- [x] Add commands to configuration file
+- [x] Remove commands from the configuration file
+- [ ] Commands can be saved with out scopes
+- [ ] Can run commands directly
 
 ## Installation
 
@@ -22,17 +26,17 @@ npm i foji -g
 
 ## Usage
 
-Foji works based on `scopes` and `commands`. A `scope` is a context in which a set of `commands` can be run. You can define your `scopes` and `commands` in the Foji configuration file (`~/.config/foji.json`) or using the `foji config` command.
+Foji works based on `scopes` and `commands`. A scope is a context in which a set of commands can be run. You can define your scopes and commands in the Foji configuration file (`~/.config/foji.json`) or using the `foji config` command.
 
 ### Running a Command
 
-To run a `command`, use the `foji run` command followed by the `scope`, the `command`, and any `arguments` for the command:
+To run a `command`, use the `foji run` command followed by the `scope`, the command, and any `arguments` for the command:
 
 ```shell
 foji run [scope] [command] [args...]
 ```
 
-If you don't provide a `scope`, Foji will list all available `scopes`. If you provide a scope but no `command`, Foji will list all `commands` available in that scope.
+If you don't provide a `scope`, Foji will list all available scopes. If you provide a scope but no `command`, Foji will list all commands available in that scope.
 
 ### Creating and Updating the Configuration
 
@@ -48,28 +52,45 @@ Foji configuration uses `scopes` to manage `commands` you can create any amount 
 ```json
 {
   "core": {
-    "rm": "rm -fr <dir>"
+    "rm": "rm -fr <dir>",
+    "echo": "echo <arg??no arg was provided but the echo worked>"
   }
 }
 ```
 
-All commands can have four types of arguments:
+All `commands` can have four types of `arguments`:
 
 1. Required arguments:
 
-- These arguments **must** be provided for the command to run. `<arg>`
+- These arguments **must** be provided for the command to run:
+
+```json
+"command":"echo <requiredArgumentOne> <requiredArgumentTwo>"
+```
 
 2. Optional arguments:
 
-- These arguments **are not** mandatory. If not provided, they will add nothing to the command. `<arg?>`
+- These arguments **are not** mandatory. If not provided, they will add nothing to the command.
+
+```json
+"command":"echo <requiredArgumentOne> <optionalArgumentOne?>"
+```
 
 3. Optional arguments with default values:
 
 - Similar to optional arguments, but if not provided, they will add a default value. `<options??--ts --tailwind --src>`
 
+```json
+"command":"echo <requiredArgumentOne> <optionalArgumentOne??My Default Value>"
+```
+
 4. Ternaries:
 
-- These arguments function like boolean arguments. Any value passed will be ignored by the CLI; it only checks **whether the argument was passed or not**. `<add-cheese?cheese:no cheese>`
+- These arguments function like boolean arguments. Any value passed will be ignored by the CLI; it only checks **whether the argument was passed or not**.
+
+```json
+"command":"echo i want pizza of <requiredArgumentOne> with <hasCheese?cheese:no cheese>"
+```
 
 Note that all `Required arguments` must be provided **BEFORE** any of the other arguments
 
