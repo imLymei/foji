@@ -38,6 +38,14 @@ foji run <scope> <command> <args...>
 
 If you don't provide a `scope`, Foji will list all available scopes. If you provide a scope but no `command`, Foji will list all commands available in that scope.
 
+### Skipping a argument
+
+You also can skip a (optional) argument using "\_":
+
+```shell
+foji run scope command argOne _ argThree
+```
+
 ### Creating and Updating the Configuration
 
 Foji provides easy ways to add `commands` to the configuration file (or create it if it does not exist):
@@ -132,10 +140,10 @@ cd foji
 npm install
 ```
 
-3. Build the project:
+3. Build and install the project:
 
 ```shell
-npm run build
+npm run build:local
 ```
 
 ## License
