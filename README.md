@@ -38,7 +38,22 @@ foji run <scope> <command> <args...>
 
 If you don't provide a `scope`, Foji will list all available scopes. If you provide a scope but no `command`, Foji will list all commands available in that scope.
 
-### Skipping a argument
+### Running a Command Without Scope
+
+You can also create a `command` without a scope. To do this just create a `scope` that have the command directly in a string and not other object:
+
+```json
+{
+  // Normal Scope-Command objects
+  "create": {
+    "next": "npx create-next-app@latest . <arg1?> <arg2>"
+  },
+  // Command without a Scope
+  "test": "echo \"my data <argOne?positive:negative> <argTwo??default arg>\""
+}
+```
+
+### Skipping a Argument
 
 You also can skip a (optional) argument using "\_":
 
