@@ -11,6 +11,7 @@ const runCommand = new Command('run')
   .argument('[command]', 'Command that you want to run')
   .argument('[args...]', 'Arguments for the command')
   .option('-d, --debug', 'Enable debugging features', false)
+  .addHelpText('after', '\n* You can use "_" to skip a argument *')
   .action(async (scope: string, command: string, args: string[]) => {
     const config = getConfig();
 
