@@ -123,9 +123,10 @@ export function formatCommand(
       allowRequired = false;
     } else {
       if (!allowRequired) {
-        throw new Error(
+        console.error(
           'You cannot have a required argument after a optional argument'
         );
+        process.exit(1);
       }
       object.name = arg.trim();
     }
