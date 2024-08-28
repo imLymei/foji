@@ -11,8 +11,9 @@ const runCommand = new Command('run')
   .argument('[command]', 'Command that you want to run')
   .argument('[args...]', 'Arguments for the command')
   .option('-d, --debug', 'Enable debugging features', false)
+  .addHelpText('after', '\n* You can use "." as the run command alias *')
   .addHelpText('after', '\n* You can use "_" to skip a argument *')
-  .action(async (scope: string, command: string, args: string[]) => {
+  .action(async (scope?: string, command?: string, args?: string[]) => {
     const config = getConfig();
 
     if (!scope) {
@@ -33,6 +34,15 @@ const runCommand = new Command('run')
     if (!scopeObject) {
       console.error(`scope "${scope}" not found`);
       process.exitCode = 1;
+      return;
+    }
+
+    if (typeof scopeObject === 'string') {
+      runUserCommand(
+        scopeObject,
+        [command, ...args],
+        runCommand.getOptionValue('debug')
+      );
       return;
     }
 
