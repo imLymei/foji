@@ -11,7 +11,7 @@ Foji is a command-line interface (CLI) tool designed to help you automate and ma
 - [x] Support for optional arguments
 - [x] Add commands to configuration file
 - [x] Remove commands from the configuration file
-- [ ] Commands can be saved with out scopes
+- [ ] Commands can be saved without scopes
 - [ ] Can run commands directly
 
 ## Installation
