@@ -4,7 +4,7 @@ import * as os from 'node:os';
 import * as path from 'node:path';
 
 type Command = Record<string, string>;
-export type Config = { [key: string]: Command };
+export type Config = { [key: string]: Command | string };
 type CommandArg = {
   name: string;
   isOptional?: boolean;
@@ -35,11 +35,7 @@ export function getConfig(): Config {
 }
 
 export function updateConfig(config: Config) {
-  const newConfig: Config = getConfig();
-
-  for (let scope in config) {
-    newConfig[scope] = { ...newConfig[scope], ...config[scope] };
-  }
+  const newConfig: Config = { ...getConfig(), ...config };
 
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
 }
