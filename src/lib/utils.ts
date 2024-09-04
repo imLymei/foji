@@ -1,4 +1,4 @@
-import { spawn } from 'node:child_process';
+import { spawn, exec } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -180,4 +180,21 @@ export function runUserCommand(
   process.on('exit', () => {
     childProcess.kill();
   });
+}
+
+export function openDirectory(path: string) {
+  let command = '';
+  switch (process.platform) {
+    case 'darwin':
+      command = 'open';
+      break;
+    case 'win32':
+      command = 'explorer';
+      break;
+    default:
+      command = 'xdg-open';
+      break;
+  }
+
+  exec(`${command} "${path}"`);
 }
