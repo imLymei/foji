@@ -4,6 +4,7 @@ import { PROGRAM_DESCRIPTION, PROGRAM_NAME, PROGRAM_VERSION } from '../config';
 import configAddCommand from './config/addCommand';
 import configRemoveCommand from './config/removeCommand';
 import runCommand from './run';
+import openConfig from './config/openConfig';
 
 const program = new Command();
 
@@ -14,6 +15,7 @@ program
 
 program.addCommand(configAddCommand);
 program.addCommand(configRemoveCommand);
+program.addCommand(openConfig);
 
 program.addCommand(runCommand);
 
