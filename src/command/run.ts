@@ -17,15 +17,29 @@ const runCommand = new Command('run')
     const config = getConfig();
 
     if (!scope) {
-      const scopes = Object.keys(config);
+      const scopesAndCommands = Object.keys(config);
 
-      if (scopes.length === 0) {
-        console.error('No scope has been configured');
+      if (scopesAndCommands.length === 0) {
+        console.error(
+          'No scope or commands found. You can create one with "foji add"'
+        );
         process.exitCode = 1;
         return;
       }
 
+      const scopes = scopesAndCommands.filter(
+        (scope) => typeof config[scope] !== 'string'
+      );
+      const commands = scopesAndCommands
+        .filter((command) => typeof config[command] === 'string')
+        .reduce(
+          (commands, command) => ({ ...commands, [command]: config[command] }),
+          {}
+        );
+
       logList('scopes', scopes);
+      console.log();
+      logList('commands', commands);
       return;
     }
 
