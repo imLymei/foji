@@ -6,6 +6,7 @@ import configRemoveCommand from './config/removeCommand';
 import runCommand from './run';
 import openConfig from './config/openConfig';
 import configUpload from './config/configUpload';
+import configDownload from './config/configDownload';
 
 const program = new Command();
 
@@ -18,6 +19,7 @@ program.addCommand(configAddCommand);
 program.addCommand(configRemoveCommand);
 program.addCommand(openConfig);
 program.addCommand(configUpload);
+program.addCommand(configDownload);
 
 program.addCommand(runCommand);
 
