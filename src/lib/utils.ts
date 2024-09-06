@@ -53,6 +53,14 @@ export async function addConfigCommand(key: string, command: string) {
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
 }
 
+export function changeGistUrl(newUrl: string) {
+  const newConfig: Config = getConfig();
+
+  newConfig.gistUrl = newUrl;
+
+  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
+}
+
 export function logList(
   listName: string,
   itemsObject: { [key: string]: any }
