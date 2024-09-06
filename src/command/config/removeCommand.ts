@@ -8,7 +8,14 @@ const configRemoveCommand = new Command('remove')
   .action((name: string) => {
     const config = getConfig();
 
+    if (!config.commands[name]) {
+      console.error('Command not found');
+      process.exit(0);
+    }
+
     delete config.commands[name];
+
+    console.log('Command deleted');
 
     createConfig(config);
   });

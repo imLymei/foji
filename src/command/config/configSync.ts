@@ -43,14 +43,14 @@ const configSync = new Command('sync')
       gistUrl = uploadConfiguration();
 
       if (!gistUrl) {
-        console.log('Something went wrong...');
+        console.error('Something went wrong...');
         process.exit(1);
       }
 
       changeGistUrl(gistUrl);
 
       if (!updateCloudConfiguration()) {
-        console.log('Something went wrong...');
+        console.error('Something went wrong...');
         process.exit(1);
       }
     }
@@ -58,7 +58,7 @@ const configSync = new Command('sync')
     const newGist = getConfiguration(gistUrl);
 
     if (!newGist) {
-      console.log('Something went wrong fetching you cloud configuration...');
+      console.error('Something went wrong fetching you cloud configuration...');
       process.exit(1);
     }
 
@@ -66,7 +66,7 @@ const configSync = new Command('sync')
       createConfig(JSON.parse(newGist));
       console.log('configuration synced!');
     } catch {
-      console.log('Something went wrong');
+      console.error('Something went wrong');
       process.exit(1);
     }
   });

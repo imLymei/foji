@@ -19,7 +19,7 @@ const configUpload = new Command('upload')
     }
 
     if (!isGithubLogged()) {
-      console.log('Your are not logged on github cli.\n');
+      console.error('Your are not logged on github cli.\n');
 
       const answer = await confirm({ message: 'Log you in?', default: true });
 
@@ -41,7 +41,7 @@ const configUpload = new Command('upload')
       const gistUrl = uploadConfiguration();
 
       if (!gistUrl) {
-        console.log('Something went wrong...');
+        console.error('Something went wrong...');
         process.exit(1);
       }
 
@@ -49,7 +49,7 @@ const configUpload = new Command('upload')
     }
 
     if (!updateCloudConfiguration()) {
-      console.log('Something went wrong...');
+      console.error('Something went wrong...');
       process.exit(1);
     }
 
