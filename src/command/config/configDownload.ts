@@ -13,7 +13,7 @@ const configDownload = new Command('download')
     const gist = getConfiguration(gistUrl);
 
     if (!gist) {
-      console.log('Something went wrong...');
+      console.error('Something went wrong...');
       process.exit(1);
     }
 
@@ -26,7 +26,7 @@ const configDownload = new Command('download')
     try {
       createConfig(JSON.parse(gist));
     } catch {
-      console.log('Something went wrong...');
+      console.error('Something went wrong...');
       process.exit(1);
     }
   });

@@ -26,9 +26,16 @@ const program = new Command()
 
       console.log();
 
+      const sortedCommands = Object.keys(configCommands)
+        .sort()
+        .reduce((acc, key) => {
+          acc[key] = configCommands[key];
+          return acc;
+        }, {} as { [key: string]: string });
+
       logList(
         'Your Commands',
-        configCommands,
+        sortedCommands,
         exampleHelpLine.indexOf(configAddCommand.description()) - 4
       );
 
