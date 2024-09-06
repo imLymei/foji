@@ -1,10 +1,13 @@
+import { confirm } from '@inquirer/prompts';
 import { spawn, exec } from 'node:child_process';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 
-type Command = Record<string, string>;
-export type Config = { [key: string]: Command | string };
+export type Config = {
+  gistUrl?: string;
+  commands: { [key: string]: string };
+};
 type CommandArg = {
   name: string;
   isOptional?: boolean;
@@ -20,7 +23,7 @@ export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function createConfig(config: Config = {}) {
+export function createConfig(config: Config = { commands: {} }) {
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
 }
 
@@ -34,8 +37,18 @@ export function getConfig(): Config {
   return configFile;
 }
 
-export function updateConfig(config: Config) {
-  const newConfig: Config = { ...getConfig(), ...config };
+export async function addConfigCommand(key: string, command: string) {
+  const newConfig: Config = getConfig();
+
+  if (newConfig.commands[key]) {
+    console.log('This command already exists.\n');
+
+    const replace = await confirm({ message: 'Replace it?' });
+
+    if (!replace) return;
+  }
+
+  newConfig.commands[key] = command;
 
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
 }

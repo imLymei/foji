@@ -4,12 +4,11 @@ import { createConfig, getConfig } from '../../lib/utils';
 const configRemoveCommand = new Command('remove')
   .alias('rm')
   .description('Remove a command from foji')
-  .argument('scope', 'Scope of the command')
   .argument('name', 'Command name')
-  .action((scope: string, name: string) => {
+  .action((name: string) => {
     const config = getConfig();
 
-    delete config[scope][name];
+    delete config.commands[name];
 
     createConfig(config);
   });
