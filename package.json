@@ -1,6 +1,6 @@
 {
   "name": "foji",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "main": "src/index.ts",
   "bin": {
     "foji": "./bin/index.js",
