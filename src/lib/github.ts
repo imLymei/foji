@@ -1,4 +1,5 @@
 import { spawnSync } from 'node:child_process';
+import { changeGistUrl, CONFIG_FILE_PATH, getConfig } from './utils';
 
 export function hasGithubCli(): boolean {
   const { status } = spawnSync('gh', { shell: true });
@@ -21,6 +22,32 @@ export function githubLogin(): boolean {
   return status === 0;
 }
 
-export function githubCreateGist(): boolean {
-  return true;
+export function githubCreateGist(): string | undefined {
+  const { stdout, status } = spawnSync(
+    `gh gist create -d "foji configuration file" -f foji.json ${CONFIG_FILE_PATH}`,
+    {
+      shell: true,
+    }
+  );
+
+  const gistUrl = stdout.toString().trim();
+
+  if (status === 0) return gistUrl;
+}
+
+export function githubUpdateGist(): boolean {
+  const config = getConfig();
+
+  if (!config.gistUrl) {
+    return false;
+  }
+
+  const { status } = spawnSync(
+    `gh gist edit ${config.gistUrl} -f foji.json ${CONFIG_FILE_PATH}`,
+    {
+      shell: true,
+    }
+  );
+
+  return status === 0;
 }

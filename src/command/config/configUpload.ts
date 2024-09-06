@@ -1,6 +1,13 @@
 import { Command } from 'commander';
-import { githubLogin, hasGithubCli, isGithubLogged } from '../../lib/github';
+import {
+  githubCreateGist,
+  githubLogin,
+  githubUpdateGist,
+  hasGithubCli,
+  isGithubLogged,
+} from '../../lib/github';
 import { confirm } from '@inquirer/prompts';
+import { changeGistUrl, getConfig } from '../../lib/utils';
 
 const configUpload = new Command('upload')
   .alias('upld')
@@ -27,7 +34,27 @@ const configUpload = new Command('upload')
       }
     }
 
-    console.log('You are logged');
+    const config = getConfig();
+
+    if (!config.gistUrl) {
+      console.log('Creating new Gist...');
+
+      const gistUrl = githubCreateGist();
+
+      if (!gistUrl) {
+        console.log('Something went wrong...');
+        process.exit(1);
+      }
+
+      changeGistUrl(gistUrl);
+    }
+
+    if (!githubUpdateGist()) {
+      console.log('Something went wrong...');
+      process.exit(1);
+    }
+
+    console.log('configuration uploaded!');
   });
 
 export default configUpload;
