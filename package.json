@@ -3,7 +3,8 @@
   "version": "0.3.2",
   "main": "src/index.ts",
   "bin": {
-    "foji": "./bin/index.js"
+    "foji": "./bin/index.js",
+    "fj": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
