@@ -11,12 +11,14 @@ Foji is a command-line interface (CLI) tool designed to help you automate and ma
 - [x] Support for optional arguments
 - [x] Add commands to configuration file
 - [x] Remove commands from the configuration file
-- [x] Commands can be saved without scopes
-- [ ] Can run commands directly
+- [x] Can run commands directly
+- [x] Configuration can be saved on cloud
+- [x] Configuration can be downloaded from cloud
+- [x] Local configuration can be synced from cloud
 
 ## Installation
 
-Before using Foji, make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+Before installing Foji, make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
 To install Foji globally, run the following command:
 
@@ -26,68 +28,37 @@ npm i foji -g
 
 ## Usage
 
-Foji works based on `scopes` and `commands`. A scope is a context in which a set of commands can be run. You can define your scopes and commands in the Foji configuration file (`~/.config/foji.json`) or using the `foji config` command.
+Foji saves your commands and your configuration url at it's configuration file (`~/.config/foji.json`). You can access the `.config` directory using `foji config` or open the file directly using `foji config -f` command.
 
 ### Running a Command
 
-To run a `command`, use the `foji run` command followed by the `scope`, the command, and any `arguments` for the command:
+To run a `command` just use:
 
 ```shell
-foji run <scope> <command> <args...>
+foji [command name] [...command args]
 ```
+Simple as that.
 
-If you don't provide a `scope`, Foji will list all available scopes. If you provide a scope but no `command`, Foji will list all commands available in that scope.
-
-### Running a Command Without Scope
-
-You can also create a `command` without a scope. To do this just create a `scope` that have the command directly in a string and not other object:
-
-```json
-{
-  // Normal Scope-Command objects
-  "create": {
-    "next": "npx create-next-app@latest . <arg1?> <arg2>"
-  },
-  // Command without a Scope
-  "test": "echo \"my data <argOne?positive:negative> <argTwo??default arg>\""
-}
-```
+If you don't provide a valid command name Foji will list all available commands, it includes default commands (eg.: `add`, `remove` and `sync`) and your own commands.
 
 ### Skipping a Argument
 
-You also can skip a (optional) argument using "\_":
+You also can skip a (optional) argument using "_":
 
 ```shell
-foji run scope command argOne _ argThree
+foji [command name] [argument one] _ [argument three]
 ```
 
-### Creating and Updating the Configuration
+## Creating and Updating the Configuration
 
 Foji provides easy ways to add `commands` to the configuration file (or create it if it does not exist):
 
-To add a new command to the configuration file you can use the `add` command:
+### Creating a New Command
+
+To add a new `command` to the configuration file you can use the `add` command:
 
 ```shell
-foji add <scope> <command name> <command>
-```
-
-To remove a command of a specified scope you can use the `remove` command
-
-```shell
-foji remove <scope> <command name>
-```
-
-## Configuration file
-
-Foji configuration uses `scopes` to manage `commands` you can create any amount of commands inside a scope:
-
-```json
-{
-  "core": {
-    "rm": "rm -fr <dir>",
-    "echo": "echo <arg??no arg was provided but the echo worked>"
-  }
-}
+foji add [command name] [command]
 ```
 
 All `commands` can have four types of `arguments`:
@@ -136,6 +107,53 @@ correct:
 
 ```json
 "command": "do command <argOne> <argTwo?>"
+```
+
+### Remove a Command
+
+To remove a `command` you can use the `remove` command
+
+```shell
+foji remove [command name] [command]
+```
+
+### Configuration File Format
+
+Foji's configuration manage your `commands` and it's `url`:
+
+```json
+{
+  "gistUrl": "https://gist.github.com/.../...",
+  "commands": {
+    "next:create": "npx create-next-app@latest <dir ?? . >",
+    "build": "npm run build:local",
+    "next:dev": "npm run dev"
+  }
+}
+```
+
+### Upload Your Configuration File
+
+To Upload your configuration to your gist (or create one if your configuration do not have yet) just run:
+
+```shell
+foji upload
+```
+
+### Download Your Configuration File
+
+To download a configuration file from someone else just run this command:
+
+```shell
+foji download [gist url]
+```
+
+### Sync Your Configuration File
+
+Update you configuration file from it's url
+
+```shell
+foji sync
 ```
 
 ## Development
