@@ -181,4 +181,6 @@ npm run build:local
 
 ## License
 
-Foji is licensed under the MIT License. See the LICENSE file for more information.
+Foji is licensed under the MIT License.
+
+See the [LICENSE](https://github.com/imLymei/foji/blob/master/LICENSE) file for more information.
