@@ -10,8 +10,7 @@ import { confirm } from '@inquirer/prompts';
 import { changeGistUrl, getConfig } from '../../lib/utils';
 
 const configUpload = new Command('upload')
-  .alias('upld')
-  .alias('up')
+  .alias('u')
   .description('Upload your foji configuration to github gist')
   .action(async () => {
     if (!hasGithubCli()) {

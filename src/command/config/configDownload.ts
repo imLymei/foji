@@ -1,17 +1,9 @@
 import { Command } from 'commander';
-import {
-  githubCreateGist,
-  githubGetGist,
-  githubLogin,
-  githubUpdateGist,
-  hasGithubCli,
-  isGithubLogged,
-} from '../../lib/github';
+import { githubGetGist } from '../../lib/github';
 import { confirm } from '@inquirer/prompts';
-import { changeGistUrl, createConfig, getConfig } from '../../lib/utils';
+import { createConfig } from '../../lib/utils';
 
 const configDownload = new Command('download')
-  .alias('dwl')
   .alias('d')
   .argument('gistUrl', 'Url/id from the configuration gist')
   .description('Download a foji configuration from github gist')

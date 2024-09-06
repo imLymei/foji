@@ -6,8 +6,6 @@ import {
 } from '../../lib/utils';
 
 const openConfig = new Command('config')
-  .alias('conf')
-  .alias('cfg')
   .alias('c')
   .description('Open foji configuration path')
   .option('-p, --path', 'Output config path', false)
