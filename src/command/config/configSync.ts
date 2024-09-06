@@ -5,13 +5,14 @@ import {
   updateCloudConfiguration,
   hasGithubCli,
   isGithubLogged,
+  getConfiguration,
 } from '../../lib/github';
 import { confirm } from '@inquirer/prompts';
-import { changeGistUrl, getConfig } from '../../lib/utils';
+import { changeGistUrl, createConfig, getConfig } from '../../lib/utils';
 
-const configUpload = new Command('upload')
-  .alias('u')
-  .description('Upload your foji configuration to github gist')
+const configSync = new Command('sync')
+  .alias('s')
+  .description("Sync your local foji configuration with it's github gist")
   .action(async () => {
     if (!hasGithubCli()) {
       console.error('You do not have github cli installed');
@@ -34,11 +35,12 @@ const configUpload = new Command('upload')
     }
 
     const config = getConfig();
+    let gistUrl = config.gistUrl;
 
-    if (!config.gistUrl) {
+    if (!gistUrl) {
       console.log('Creating new Gist...');
 
-      const gistUrl = uploadConfiguration();
+      gistUrl = uploadConfiguration();
 
       if (!gistUrl) {
         console.log('Something went wrong...');
@@ -46,14 +48,27 @@ const configUpload = new Command('upload')
       }
 
       changeGistUrl(gistUrl);
+
+      if (!updateCloudConfiguration()) {
+        console.log('Something went wrong...');
+        process.exit(1);
+      }
     }
 
-    if (!updateCloudConfiguration()) {
-      console.log('Something went wrong...');
+    const newGist = getConfiguration(gistUrl);
+
+    if (!newGist) {
+      console.log('Something went wrong fetching you cloud configuration...');
       process.exit(1);
     }
 
-    console.log('configuration uploaded!');
+    try {
+      createConfig(JSON.parse(newGist));
+      console.log('configuration synced!');
+    } catch {
+      console.log('Something went wrong');
+      process.exit(1);
+    }
   });
 
-export default configUpload;
+export default configSync;

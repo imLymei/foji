@@ -43,5 +43,6 @@ program.addCommand(configRemoveCommand);
 program.addCommand(openConfig);
 program.addCommand(configUpload);
 program.addCommand(configDownload);
+program.addCommand(configSync);
 
 export default program;
