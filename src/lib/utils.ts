@@ -64,38 +64,22 @@ export function changeGistUrl(newUrl: string) {
 
 export function logList(
   listName: string,
-  itemsObject: { [key: string]: any }
-): void;
-export function logList(
-  listName: string,
-  itemNames: string[],
-  itemsValues?: string[]
-): void;
-export function logList(
-  listName: string,
-  items: string[] | Record<string, string>,
-  itemsValues?: string[]
-): void {
+  items: { [key: string]: any },
+  maxItemNameSize?: number
+) {
   const minSpaces = 2;
-  const isItemsArray = Array.isArray(items);
-  const itemNames = isItemsArray ? items : Object.keys(items);
+  const itemNames = Object.keys(items);
 
   console.log(
     `${listName[0].toUpperCase() + listName.slice(1).toLowerCase()}:`
   );
 
-  const maxItemNameSize = Math.max(
-    ...itemNames.map((itemName) => itemName.length)
-  );
+  if (!maxItemNameSize)
+    maxItemNameSize = Math.max(...itemNames.map((itemName) => itemName.length));
 
   for (let item of itemNames) {
     const spaces = ' '.repeat(maxItemNameSize - item.length + minSpaces);
-    console.log(
-      `  ${item}${spaces}${
-        (isItemsArray ? (itemsValues ? itemsValues[item] : '') : items[item]) ??
-        ''
-      }`
-    );
+    console.log(`  ${item}${spaces}${items[item] ?? ''}`);
   }
 }
 

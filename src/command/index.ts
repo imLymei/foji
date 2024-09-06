@@ -7,19 +7,34 @@ import openConfig from './config/openConfig';
 import configUpload from './config/configUpload';
 import configDownload from './config/configDownload';
 import { getConfig, logList, runUserCommand } from '../lib/utils';
+import configSync from './config/configSync';
 
 const program = new Command()
   .argument('[command]', 'Command that you want to run')
   .argument('[args...]', 'Arguments for the command')
   .option('-d, --debug', 'Enable debugging features', false)
-  .addHelpText('after', '\n* You can use "_" to skip a argument *')
   .action(async (commandName?: string, args?: string[]) => {
-    if (!commandName) program.help();
-
     const configCommands = getConfig().commands;
 
     if (!commandName) {
-      logList('Commands', configCommands);
+      program.outputHelp();
+      const help = program.helpInformation();
+
+      const exampleHelpLine = help
+        .split('\n')
+        .filter((text) => text.includes(configAddCommand.description()))[0];
+
+      console.log();
+
+      logList(
+        'Your Commands',
+        configCommands,
+        exampleHelpLine.indexOf(configAddCommand.description()) - 4
+      );
+
+      console.log();
+
+      console.log('You can use "_" to skip a optional argument');
       process.exit(0);
     }
 
