@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { changeGistUrl, CONFIG_FILE_PATH, getConfig } from './utils';
+import { CONFIG_FILE_PATH, getConfig } from './utils';
 
 export function hasGithubCli(): boolean {
   const { status } = spawnSync('gh', { shell: true });
@@ -13,7 +13,7 @@ export function isGithubLogged(): boolean {
   return status === 0;
 }
 
-export function githubLogin(): boolean {
+export function login(): boolean {
   const { status } = spawnSync('gh auth login', {
     shell: true,
     stdio: 'inherit',
@@ -22,7 +22,7 @@ export function githubLogin(): boolean {
   return status === 0;
 }
 
-export function githubCreateGist(): string | undefined {
+export function uploadConfiguration(): string | undefined {
   const { stdout, status } = spawnSync(
     `gh gist create -d "foji configuration file" -f foji.json ${CONFIG_FILE_PATH}`,
     {
@@ -35,7 +35,7 @@ export function githubCreateGist(): string | undefined {
   if (status === 0) return gistUrl;
 }
 
-export function githubGetGist(gistUrl: string): string | undefined {
+export function getConfiguration(gistUrl: string): string | undefined {
   const { stdout, status } = spawnSync(`gh gist view ${gistUrl} -r`, {
     shell: true,
   });
@@ -48,7 +48,7 @@ export function githubGetGist(gistUrl: string): string | undefined {
   if (status === 0) return gist;
 }
 
-export function githubUpdateGist(): boolean {
+export function updateCloudConfiguration(): boolean {
   const config = getConfig();
 
   if (!config.gistUrl) {

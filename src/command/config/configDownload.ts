@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { githubGetGist } from '../../lib/github';
+import { getConfiguration } from '../../lib/github';
 import { confirm } from '@inquirer/prompts';
 import { createConfig } from '../../lib/utils';
 
@@ -10,7 +10,7 @@ const configDownload = new Command('download')
   .action(async (gistUrl: string) => {
     console.log('Downloading configuration...');
 
-    const gist = githubGetGist(gistUrl);
+    const gist = getConfiguration(gistUrl);
 
     if (!gist) {
       console.log('Something went wrong...');
