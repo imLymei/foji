@@ -35,6 +35,19 @@ export function githubCreateGist(): string | undefined {
   if (status === 0) return gistUrl;
 }
 
+export function githubGetGist(gistUrl: string): string | undefined {
+  const { stdout, status } = spawnSync(`gh gist view ${gistUrl} -r`, {
+    shell: true,
+  });
+
+  const rawGist = stdout.toString().trim();
+
+  const configStart = rawGist.indexOf('{');
+  const gist = rawGist.slice(configStart);
+
+  if (status === 0) return gist;
+}
+
 export function githubUpdateGist(): boolean {
   const config = getConfig();
 

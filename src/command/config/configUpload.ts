@@ -12,7 +12,7 @@ import { changeGistUrl, getConfig } from '../../lib/utils';
 const configUpload = new Command('upload')
   .alias('upld')
   .alias('up')
-  .description('Remove a command from foji')
+  .description('Upload your foji configuration to github gist')
   .action(async () => {
     if (!hasGithubCli()) {
       console.error('You do not have github cli installed');

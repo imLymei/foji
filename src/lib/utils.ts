@@ -23,8 +23,9 @@ export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function createConfig(config: Config = { commands: {} }) {
+export function createConfig(config: Config = { commands: {} }): Config {
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
+  return config;
 }
 
 export function getConfig(): Config {
@@ -34,7 +35,7 @@ export function getConfig(): Config {
     fs.readFileSync(CONFIG_FILE_PATH, 'utf-8')
   );
 
-  return configFile;
+  return configFile.commands ? configFile : createConfig();
 }
 
 export async function addConfigCommand(key: string, command: string) {
@@ -50,7 +51,7 @@ export async function addConfigCommand(key: string, command: string) {
 
   newConfig.commands[key] = command;
 
-  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
+  createConfig(newConfig);
 }
 
 export function changeGistUrl(newUrl: string) {
@@ -58,7 +59,7 @@ export function changeGistUrl(newUrl: string) {
 
   newConfig.gistUrl = newUrl;
 
-  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
+  createConfig(newConfig);
 }
 
 export function logList(
