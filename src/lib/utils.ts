@@ -24,6 +24,7 @@ export const HAS_CONFIGURATION = fs.existsSync(
 );
 
 export function createConfig(config: Config = { commands: {} }): Config {
+  if (!HAS_CONFIGURATION) fs.mkdirSync(CONFIG_DIRECTORY, { recursive: true });
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
   return config;
 }
