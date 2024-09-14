@@ -1,13 +1,15 @@
 import { Command } from 'commander';
-import { getConfiguration } from '../../lib/github';
+import { basicGithubVerifications, getConfiguration } from '../lib/github';
 import { confirm } from '@inquirer/prompts';
-import { createConfig } from '../../lib/utils';
+import { createConfig } from '../lib/utils';
 
-const configDownload = new Command('download')
+const downloadConfig = new Command('download')
   .alias('d')
   .argument('gistUrl', 'Url/id from the configuration gist')
   .description('Download a foji configuration from github gist')
   .action(async (gistUrl: string) => {
+    await basicGithubVerifications();
+
     console.log('Downloading configuration...');
 
     const gist = getConfiguration(gistUrl);
@@ -31,4 +33,4 @@ const configDownload = new Command('download')
     }
   });
 
-export default configDownload;
+export default downloadConfig;

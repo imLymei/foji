@@ -1,13 +1,13 @@
 import { Command } from 'commander';
 import { PROGRAM_DESCRIPTION, PROGRAM_NAME, PROGRAM_VERSION } from '../config';
 
-import configAddCommand from './config/addCommand';
-import configRemoveCommand from './config/removeCommand';
-import openConfig from './config/openConfig';
-import configUpload from './config/configUpload';
-import configDownload from './config/configDownload';
+import addCommand from './addCommand';
+import removeCommand from './removeCommand';
+import openConfig from './openConfig';
+import uploadConfig from './uploadConfig';
+import downloadConfig from './downloadConfig';
 import { getConfig, logList, runUserCommand } from '../lib/utils';
-import configSync from './config/configSync';
+import syncConfig from './syncConfig';
 
 const program = new Command()
   .argument('[command]', 'Command that you want to run')
@@ -22,7 +22,7 @@ const program = new Command()
 
       const exampleHelpLine = help
         .split('\n')
-        .filter((text) => text.includes(configAddCommand.description()))[0];
+        .filter((text) => text.includes(addCommand.description()))[0];
 
       console.log();
 
@@ -33,13 +33,15 @@ const program = new Command()
           return acc;
         }, {} as { [key: string]: string });
 
-      logList(
-        'Your Commands',
-        sortedCommands,
-        exampleHelpLine.indexOf(configAddCommand.description()) - 4
-      );
+      if (Object.keys(sortedCommands).length > 0) {
+        logList(
+          'Your Commands',
+          sortedCommands,
+          exampleHelpLine.indexOf(addCommand.description()) - 4
+        );
 
-      console.log();
+        console.log();
+      }
 
       console.log('You can use "_" to skip a optional argument');
       process.exit(0);
@@ -60,11 +62,11 @@ program
   .description(PROGRAM_DESCRIPTION)
   .version(PROGRAM_VERSION);
 
-program.addCommand(configAddCommand);
-program.addCommand(configRemoveCommand);
+program.addCommand(addCommand);
+program.addCommand(removeCommand);
 program.addCommand(openConfig);
-program.addCommand(configUpload);
-program.addCommand(configDownload);
-program.addCommand(configSync);
+program.addCommand(uploadConfig);
+program.addCommand(downloadConfig);
+program.addCommand(syncConfig);
 
 export default program;
