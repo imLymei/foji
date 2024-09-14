@@ -1,7 +1,7 @@
 import { Command } from 'commander';
-import { addConfigCommand } from '../../lib/utils';
+import { addConfigCommand } from '../lib/utils';
 
-const configAddCommand = new Command('add')
+const addCommand = new Command('add')
   .alias('a')
   .description('Add a new command to foji')
   .argument('name', 'Command name')
@@ -10,4 +10,4 @@ const configAddCommand = new Command('add')
     addConfigCommand(name, command);
   });
 
-export default configAddCommand;
+export default addCommand;

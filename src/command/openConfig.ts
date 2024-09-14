@@ -3,7 +3,7 @@ import {
   CONFIG_DIRECTORY,
   CONFIG_FILE_PATH,
   openDirectory,
-} from '../../lib/utils';
+} from '../lib/utils';
 
 const openConfig = new Command('config')
   .alias('c')
