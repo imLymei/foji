@@ -2,7 +2,7 @@ import { Command } from 'commander';
 import { createConfig, getConfig } from '../lib/utils';
 
 const removeCommand = new Command('remove')
-  .alias('r')
+  .alias('rm')
   .description('Remove a command from foji')
   .argument('name', 'Command name')
   .action((name: string) => {

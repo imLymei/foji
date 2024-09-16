@@ -8,6 +8,7 @@ import uploadConfig from './uploadConfig';
 import downloadConfig from './downloadConfig';
 import { getConfig, logList, runUserCommand } from '../lib/utils';
 import syncConfig from './syncConfig';
+import renameCommand from './renameCommand';
 
 const program = new Command()
   .argument('[command]', 'Command that you want to run')
@@ -63,6 +64,7 @@ program
   .version(PROGRAM_VERSION);
 
 program.addCommand(addCommand);
+program.addCommand(renameCommand);
 program.addCommand(removeCommand);
 program.addCommand(openConfig);
 program.addCommand(uploadConfig);
