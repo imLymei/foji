@@ -2,5 +2,5 @@
  * @type {import('semantic-release').GlobalConfig}
  */
 export default {
-  branches: ['master', { name: 'next', prerelease: true }],
+  branches: ['master', 'next', { name: 'beta', prerelease: true }],
 };
