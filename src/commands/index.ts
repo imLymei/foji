@@ -6,7 +6,12 @@ import removeCommand from './removeCommand';
 import openConfig from './openConfig';
 import uploadConfig from './uploadConfig';
 import downloadConfig from './downloadConfig';
-import { getConfig, logList, runUserCommand } from '../lib/utils';
+import {
+  getClosestWord,
+  getConfig,
+  logList,
+  runUserCommand,
+} from '../lib/utils';
 import syncConfig from './syncConfig';
 import renameCommand from './renameCommand';
 
@@ -51,7 +56,20 @@ const program = new Command()
     const command = configCommands[commandName];
 
     if (!command) {
-      console.error(`command "${commandName}" not found`);
+      const closestWord = getClosestWord(
+        commandName,
+        Object.keys(configCommands)
+      );
+
+      let suggestion: string;
+
+      if (isFinite(closestWord.distance))
+        suggestion = `Did you mean: "${closestWord.word}"?`;
+
+      console.error(`command "${commandName}" not found.`);
+
+      if (suggestion) console.log(suggestion);
+
       process.exit(1);
     }
 

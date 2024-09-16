@@ -1,14 +1,10 @@
 import { Command } from 'commander';
 import {
   uploadConfiguration,
-  login,
   updateCloudConfiguration,
-  hasGithubCli,
-  isGithubLogged,
   getConfiguration,
   basicGithubVerifications,
 } from '../lib/github';
-import { confirm } from '@inquirer/prompts';
 import { changeGistUrl, createConfig, getConfig } from '../lib/utils';
 
 const syncConfig = new Command('sync')
