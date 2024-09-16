@@ -5,7 +5,7 @@ import {
   getConfiguration,
   basicGithubVerifications,
 } from '../lib/github';
-import { changeGistUrl, createConfig, getConfig } from '../lib/utils';
+import { changeGistUrl, createConfig, error, getConfig } from '../lib/utils';
 
 const syncConfig = new Command('sync')
   .alias('s')
@@ -21,32 +21,23 @@ const syncConfig = new Command('sync')
 
       gistUrl = uploadConfiguration();
 
-      if (!gistUrl) {
-        console.error('Something went wrong...');
-        process.exit(1);
-      }
+      if (!gistUrl) error('Something went wrong...');
 
       changeGistUrl(gistUrl);
 
-      if (!updateCloudConfiguration()) {
-        console.error('Something went wrong...');
-        process.exit(1);
-      }
+      if (!updateCloudConfiguration()) error('Something went wrong...');
     }
 
     const newGist = getConfiguration(gistUrl);
 
-    if (!newGist) {
-      console.error('Something went wrong fetching you cloud configuration...');
-      process.exit(1);
-    }
+    if (!newGist)
+      error('Something went wrong fetching you cloud configuration...');
 
     try {
       createConfig(JSON.parse(newGist));
       console.log('Configuration synced!');
     } catch {
-      console.error('Something went wrong');
-      process.exit(1);
+      error('Something went wrong');
     }
   });
 

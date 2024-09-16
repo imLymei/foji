@@ -59,10 +59,7 @@ export async function addConfigCommand(key: string, command: string) {
 export async function editConfigCommand(key: string, command: string) {
   const newConfig: Config = getConfig();
 
-  if (!newConfig.commands[key]) {
-    console.error('Command not found');
-    process.exit(1);
-  }
+  if (!newConfig.commands[key]) error('Command not found');
 
   newConfig.commands[key] = command;
 
@@ -139,12 +136,9 @@ export function formatCommand(
 
       allowRequired = false;
     } else {
-      if (!allowRequired) {
-        console.error(
-          'You cannot have a required argument after a optional argument'
-        );
-        process.exit(1);
-      }
+      if (!allowRequired)
+        error('You cannot have a required argument after a optional argument');
+
       object.name = arg.trim();
     }
 
@@ -156,10 +150,7 @@ export function formatCommand(
   );
 
   if (necessaryArgs.length > args.length) {
-    console.log(
-      `The argument "${commandArguments[args.length].name}" is missing`
-    );
-    return;
+    error(`The argument "${commandArguments[args.length].name}" is missing`);
   }
 
   args = args.map((arg) => (arg === '_' ? undefined : arg));
@@ -238,4 +229,10 @@ export function getClosestWord(
     },
     { distance: Infinity, word: defaultWord }
   );
+}
+
+export function error(error: string, optionalMessage?: string) {
+  console.error(error);
+  if (optionalMessage) console.log(optionalMessage);
+  process.exit(1);
 }

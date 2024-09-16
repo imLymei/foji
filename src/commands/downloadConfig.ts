@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { basicGithubVerifications, getConfiguration } from '../lib/github';
 import { confirm } from '@inquirer/prompts';
-import { createConfig } from '../lib/utils';
+import { createConfig, error } from '../lib/utils';
 
 const downloadConfig = new Command('download')
   .alias('d')
@@ -14,10 +14,7 @@ const downloadConfig = new Command('download')
 
     const gist = getConfiguration(gistUrl);
 
-    if (!gist) {
-      console.error('Something went wrong...');
-      process.exit(1);
-    }
+    if (!gist) error('Something went wrong...');
 
     const update = await confirm({
       message: `Do you want to make this your new configuration?\n\n${gist}\n`,
@@ -28,8 +25,7 @@ const downloadConfig = new Command('download')
     try {
       createConfig(JSON.parse(gist));
     } catch {
-      console.error('Something went wrong...');
-      process.exit(1);
+      error('Something went wrong...');
     }
   });
 

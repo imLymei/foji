@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { CONFIG_FILE_PATH, getConfig } from './utils';
+import { CONFIG_FILE_PATH, error, getConfig } from './utils';
 import { confirm } from '@inquirer/prompts';
 
 export function hasGithubCli(): boolean {
@@ -67,10 +67,7 @@ export function updateCloudConfiguration(): boolean {
 }
 
 export async function basicGithubVerifications() {
-  if (!hasGithubCli()) {
-    console.error('You do not have github cli installed');
-    process.exit(1);
-  }
+  if (!hasGithubCli()) error('You do not have github cli installed');
 
   if (!isGithubLogged()) {
     console.error('Your are not logged on github cli.\n');
@@ -81,9 +78,6 @@ export async function basicGithubVerifications() {
 
     console.log();
 
-    if (!login()) {
-      console.error('Something went wrong...');
-      process.exit(1);
-    }
+    if (!login()) error('Something went wrong...');
   }
 }

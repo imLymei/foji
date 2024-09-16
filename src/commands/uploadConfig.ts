@@ -4,7 +4,7 @@ import {
   updateCloudConfiguration,
   basicGithubVerifications,
 } from '../lib/github';
-import { changeGistUrl, getConfig } from '../lib/utils';
+import { changeGistUrl, error, getConfig } from '../lib/utils';
 
 const uploadConfig = new Command('upload')
   .alias('u')
@@ -19,18 +19,12 @@ const uploadConfig = new Command('upload')
 
       const gistUrl = uploadConfiguration();
 
-      if (!gistUrl) {
-        console.error('Something went wrong...');
-        process.exit(1);
-      }
+      if (!gistUrl) error('Something went wrong...');
 
       changeGistUrl(gistUrl);
     }
 
-    if (!updateCloudConfiguration()) {
-      console.error('Something went wrong...');
-      process.exit(1);
-    }
+    if (!updateCloudConfiguration()) error('Something went wrong...');
 
     console.log('Configuration uploaded!');
   });

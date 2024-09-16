@@ -7,6 +7,7 @@ import openConfig from './openConfig';
 import uploadConfig from './uploadConfig';
 import downloadConfig from './downloadConfig';
 import {
+  error,
   getClosestWord,
   getConfig,
   logList,
@@ -67,11 +68,7 @@ const program = new Command()
       if (isFinite(closestWord.distance))
         suggestion = `Did you mean: "${closestWord.word}"?`;
 
-      console.error(`command "${commandName}" not found.`);
-
-      if (suggestion) console.log(suggestion);
-
-      process.exit(1);
+      error(`command "${commandName}" not found.`, suggestion);
     }
 
     runUserCommand(command, args, program.getOptionValue('debug'));

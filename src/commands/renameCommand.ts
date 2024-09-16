@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { createConfig, getConfig } from '../lib/utils';
+import { createConfig, error, getConfig } from '../lib/utils';
 
 const renameCommand = new Command('rename')
   .alias('rn')
@@ -9,10 +9,7 @@ const renameCommand = new Command('rename')
   .action((oldName: string, newName: string) => {
     const config = getConfig();
 
-    if (!config.commands[oldName]) {
-      console.error('Command not found');
-      process.exit(1);
-    }
+    if (!config.commands[oldName]) error('Command not found');
 
     config.commands[newName] = config.commands[oldName];
     delete config.commands[oldName];
