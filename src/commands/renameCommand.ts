@@ -9,6 +9,11 @@ const renameCommand = new Command('rename')
   .action((oldName: string, newName: string) => {
     const config = getConfig();
 
+    if (!config.commands[oldName]) {
+      console.error('Command not found');
+      process.exit(1);
+    }
+
     config.commands[newName] = config.commands[oldName];
     delete config.commands[oldName];
 
