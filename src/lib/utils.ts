@@ -151,12 +151,6 @@ export function formatCommand(
 
   args = args.map((arg) => (arg === '_' ? undefined : arg));
 
-  if (debug) {
-    console.log('Command:', command);
-    console.log('Command arguments:', commandArguments);
-    console.log('Received arguments:', args);
-  }
-
   for (let index = 0; index < commandArguments.length; index++) {
     const arg = commandArguments[index];
     let argValue = arg.alternativeValue
@@ -166,6 +160,16 @@ export function formatCommand(
       : args[index] ?? arg.defaultValue ?? '';
 
     splitCommand[index * 2 + 1] = argValue;
+  }
+
+  if (debug) {
+    console.log('Command:', command);
+    console.log('Command arguments:', commandArguments);
+    console.log('Received arguments:', args);
+    console.log(`Formatted command: ${splitCommand.join('')}`);
+    console.log();
+    console.log('Running command...');
+    console.log();
   }
 
   return splitCommand.join('');
