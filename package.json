@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.7",
     "@types/node": "^22.5.1",
+    "semantic-release": "^24.1.1",
     "typescript": "^5.5.4"
   },
   "dependencies": {
