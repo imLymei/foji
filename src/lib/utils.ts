@@ -59,7 +59,7 @@ export async function addConfigCommand(key: string, command: string) {
 export async function editConfigCommand(key: string, command: string) {
   const newConfig: Config = getConfig();
 
-  if (!newConfig.commands[key]) error('Command not found');
+  if (!newConfig.commands[key]) error(`Command "${key}" not found`);
 
   newConfig.commands[key] = command;
 

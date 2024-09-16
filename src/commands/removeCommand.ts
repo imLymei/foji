@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { createConfig, getConfig } from '../lib/utils';
+import { createConfig, error, getConfig } from '../lib/utils';
 
 const removeCommand = new Command('remove')
   .alias('rm')
@@ -8,10 +8,7 @@ const removeCommand = new Command('remove')
   .action((name: string) => {
     const config = getConfig();
 
-    if (!config.commands[name]) {
-      console.error('Command not found');
-      process.exit(0);
-    }
+    if (!config.commands[name]) error(`Command "${name}" not found`);
 
     delete config.commands[name];
 
