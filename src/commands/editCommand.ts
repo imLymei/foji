@@ -5,7 +5,7 @@ const editCommand = new Command('edit')
   .alias('e')
   .description('Edit a foji command')
   .argument('name', 'Command name')
-  .argument('command', 'Command to be added')
+  .argument('command', 'New command')
   .action((name: string, command: string) => {
     editConfigCommand(name, command);
   });
