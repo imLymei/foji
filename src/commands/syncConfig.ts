@@ -47,7 +47,7 @@ const syncConfig = new Command('sync')
 
     try {
       createConfig(JSON.parse(newGist));
-      console.log('configuration synced!');
+      console.log('Configuration synced!');
     } catch {
       console.error('Something went wrong');
       process.exit(1);
