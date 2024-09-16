@@ -27,6 +27,7 @@
   "license": "MIT",
   "description": "Forge your code in a new way.",
   "devDependencies": {
+    "@types/fast-levenshtein": "^0.0.4",
     "@types/inquirer": "^9.0.7",
     "@types/node": "^22.5.1",
     "semantic-release": "^24.1.1",
@@ -34,6 +35,7 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^5.4.0",
-    "commander": "^12.1.0"
+    "commander": "^12.1.0",
+    "fast-levenshtein": "^3.0.0"
   }
 }

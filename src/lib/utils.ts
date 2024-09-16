@@ -1,5 +1,6 @@
 import { confirm } from '@inquirer/prompts';
 import { spawn, exec } from 'node:child_process';
+import levenshtein from 'fast-levenshtein';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
@@ -204,4 +205,20 @@ export function openDirectory(path: string) {
   }
 
   exec(`${command} "${path}"`);
+}
+
+export function getClosestWord(
+  searchWord: string,
+  words: string[],
+  defaultWord?: ''
+): { distance: number; word: string } {
+  return words.reduce(
+    (data, word) => {
+      const distance = levenshtein.get(searchWord, word);
+
+      if (distance < data.distance) return { distance, word };
+      return data;
+    },
+    { distance: Infinity, word: defaultWord }
+  );
 }
