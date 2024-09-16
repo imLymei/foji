@@ -15,8 +15,6 @@ const removeCommand = new Command('remove')
 
     delete config.commands[name];
 
-    console.log('Command deleted');
-
     createConfig(config);
   });
 

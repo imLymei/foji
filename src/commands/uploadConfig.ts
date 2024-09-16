@@ -32,7 +32,7 @@ const uploadConfig = new Command('upload')
       process.exit(1);
     }
 
-    console.log('configuration uploaded!');
+    console.log('Configuration uploaded!');
   });
 
 export default uploadConfig;
