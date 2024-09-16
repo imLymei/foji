@@ -64,11 +64,11 @@ const program = new Command()
       let suggestion: string;
 
       if (isFinite(closestWord.distance))
-        suggestion = `\nDid you mean: "${closestWord.word}"?`;
+        suggestion = `Did you mean: "${closestWord.word}"?`;
 
-      console.error(
-        `command "${commandName}" not found.${suggestion ? suggestion : ''}`
-      );
+      console.error(`command "${commandName}" not found.`);
+
+      if (suggestion) console.log(suggestion);
 
       process.exit(1);
     }
