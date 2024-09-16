@@ -56,6 +56,19 @@ export async function addConfigCommand(key: string, command: string) {
   createConfig(newConfig);
 }
 
+export async function editConfigCommand(key: string, command: string) {
+  const newConfig: Config = getConfig();
+
+  if (!newConfig.commands[key]) {
+    console.error('Command not found');
+    process.exit(1);
+  }
+
+  newConfig.commands[key] = command;
+
+  createConfig(newConfig);
+}
+
 export function changeGistUrl(newUrl: string) {
   const newConfig: Config = getConfig();
 

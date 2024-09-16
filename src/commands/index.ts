@@ -14,6 +14,7 @@ import {
 } from '../lib/utils';
 import syncConfig from './syncConfig';
 import renameCommand from './renameCommand';
+import editCommand from './editCommand';
 
 const program = new Command()
   .argument('[command]', 'Command that you want to run')
@@ -83,6 +84,7 @@ program
 
 program.addCommand(addCommand);
 program.addCommand(renameCommand);
+program.addCommand(editCommand);
 program.addCommand(removeCommand);
 program.addCommand(openConfig);
 program.addCommand(uploadConfig);
