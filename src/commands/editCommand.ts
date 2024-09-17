@@ -1,6 +1,11 @@
 import { Command } from 'commander';
-import { Config, createConfig, getConfig } from '../lib/utils';
-import { error } from 'console';
+import {
+  Config,
+  createConfig,
+  error,
+  getClosestWord,
+  getConfig,
+} from '../lib/utils';
 
 const editCommand = new Command('edit')
   .alias('e')
@@ -10,7 +15,16 @@ const editCommand = new Command('edit')
   .action((name: string, command: string) => {
     const newConfig: Config = getConfig();
 
-    if (!newConfig.commands[name]) error(`Command "${name}" not found`);
+    if (!newConfig.commands[name]) {
+      const closestWord = getClosestWord(name, Object.keys(newConfig.commands));
+
+      error(
+        `Command "${name}" not found`,
+        isFinite(closestWord.distance)
+          ? `Did you mean: "${closestWord.word}"?`
+          : undefined
+      );
+    }
 
     newConfig.commands[name] = command;
 

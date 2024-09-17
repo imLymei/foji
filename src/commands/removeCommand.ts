@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { createConfig, error, getConfig } from '../lib/utils';
+import { createConfig, error, getClosestWord, getConfig } from '../lib/utils';
 
 const removeCommand = new Command('remove')
   .alias('rm')
@@ -8,7 +8,16 @@ const removeCommand = new Command('remove')
   .action((name: string) => {
     const config = getConfig();
 
-    if (!config.commands[name]) error(`Command "${name}" not found`);
+    if (!config.commands[name]) {
+      const closestWord = getClosestWord(name, Object.keys(config.commands));
+
+      error(
+        `Command "${name}" not found`,
+        isFinite(closestWord.distance)
+          ? `Did you mean: "${closestWord.word}"?`
+          : undefined
+      );
+    }
 
     delete config.commands[name];
 
