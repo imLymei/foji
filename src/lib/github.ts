@@ -56,6 +56,8 @@ export function updateCloudConfiguration(): boolean {
     return false;
   }
 
+  // TODO - do not save lettersSaved on cloud
+
   const { status } = spawnSync(
     `gh gist edit ${config.gistUrl} -f foji.json ${CONFIG_FILE_PATH}`,
     {
