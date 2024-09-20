@@ -7,6 +7,7 @@ import * as path from 'node:path';
 
 export type Config = {
   gistUrl?: string;
+  lettersSaved?: number;
   commands: { [key: string]: string };
 };
 type CommandArg = {
@@ -24,10 +25,16 @@ export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function createConfig(config: Config = { commands: {} }): Config {
+export function createConfig(
+  newConfig: Config = { commands: {} },
+  useLettersSaved = false
+): Config {
   if (!HAS_CONFIGURATION) fs.mkdirSync(CONFIG_DIRECTORY, { recursive: true });
-  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
-  return config;
+
+  if (!useLettersSaved) newConfig.lettersSaved = getConfig().lettersSaved;
+
+  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
+  return newConfig;
 }
 
 export function getConfig(): Config {
@@ -62,6 +69,14 @@ export function changeGistUrl(newUrl: string) {
   newConfig.gistUrl = newUrl;
 
   createConfig(newConfig);
+}
+
+export function changeLettersSaved(letters: number) {
+  const newConfig: Config = getConfig();
+
+  newConfig.lettersSaved = (newConfig.lettersSaved ?? 0) + letters;
+
+  createConfig(newConfig, true);
 }
 
 export function logList(
@@ -103,6 +118,8 @@ export function formatCommand(
     const hasElse = !hasDefaultValue && arg.includes(':');
     const isTernary = !hasDefaultValue && hasElse && arg.includes('?');
     const isOptional = !hasDefaultValue && !hasElse && arg.includes('?');
+
+    // TODO - make linting function
 
     if (hasDefaultValue) {
       const [name, defaultValue] = arg.split('??');
@@ -156,28 +173,22 @@ export function formatCommand(
     splitCommand[index * 2 + 1] = argValue;
   }
 
+  const finalCommand = splitCommand.join('');
+
   if (debug) {
     console.log('Command:', command);
     console.log('Command arguments:', commandArguments);
     console.log('Received arguments:', args);
-    console.log(`Formatted command: ${splitCommand.join('')}`);
+    console.log(`Formatted command: ${finalCommand}`);
     console.log();
     console.log('Running command...');
     console.log();
   }
 
-  return splitCommand.join('');
+  return finalCommand;
 }
 
-export function runUserCommand(
-  command: string,
-  args: string[],
-  debug = false
-): void {
-  command = formatCommand(command, args, debug);
-
-  if (!command) return;
-
+export function runUserCommand(command: string): void {
   const childProcess = spawn(command, {
     shell: true,
     stdio: 'inherit',

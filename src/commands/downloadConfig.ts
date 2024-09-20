@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import { basicGithubVerifications, getConfiguration } from '../lib/github';
 import { confirm } from '@inquirer/prompts';
-import { createConfig, error } from '../lib/utils';
+import { Config, createConfig, error } from '../lib/utils';
 
 const downloadConfig = new Command('download')
   .alias('d')
@@ -23,7 +23,11 @@ const downloadConfig = new Command('download')
     if (!update) process.exit(0);
 
     try {
-      createConfig(JSON.parse(gist));
+      const newConfig: Config = JSON.parse(gist);
+
+      delete newConfig.lettersSaved;
+
+      createConfig(newConfig);
     } catch {
       error('Something went wrong...');
     }

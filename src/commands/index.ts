@@ -7,7 +7,9 @@ import openConfig from './openConfig';
 import uploadConfig from './uploadConfig';
 import downloadConfig from './downloadConfig';
 import {
+  changeLettersSaved,
   error,
+  formatCommand,
   getClosestWord,
   getConfig,
   logList,
@@ -22,7 +24,8 @@ const program = new Command()
   .argument('[args...]', 'Arguments for the command')
   .option('-d, --debug', 'Enable debugging features', false)
   .action(async (commandName?: string, args?: string[]) => {
-    const configCommands = getConfig().commands;
+    const userConfig = getConfig();
+    const configCommands = userConfig.commands;
 
     if (!commandName) {
       program.outputHelp();
@@ -52,6 +55,7 @@ const program = new Command()
       }
 
       console.log('You can use "_" to skip a optional argument');
+      console.log(`Letters saved: ${userConfig.lettersSaved ?? 0}`);
       process.exit(0);
     }
 
@@ -71,7 +75,20 @@ const program = new Command()
       error(`command "${commandName}" not found.`, suggestion);
     }
 
-    runUserCommand(command, args, program.getOptionValue('debug'));
+    const finalCommand = formatCommand(
+      command,
+      args,
+      program.getOptionValue('debug')
+    );
+
+    changeLettersSaved(
+      Math.max(
+        finalCommand.length - `fj ${commandName} ${args.join(' ')}`.length,
+        0
+      )
+    );
+
+    runUserCommand(finalCommand);
   });
 
 program

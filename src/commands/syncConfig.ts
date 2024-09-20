@@ -5,7 +5,13 @@ import {
   getConfiguration,
   basicGithubVerifications,
 } from '../lib/github';
-import { changeGistUrl, createConfig, error, getConfig } from '../lib/utils';
+import {
+  changeGistUrl,
+  Config,
+  createConfig,
+  error,
+  getConfig,
+} from '../lib/utils';
 
 const syncConfig = new Command('sync')
   .alias('s')
@@ -34,7 +40,11 @@ const syncConfig = new Command('sync')
       error('Something went wrong fetching you cloud configuration...');
 
     try {
-      createConfig(JSON.parse(newGist));
+      const newConfig: Config = JSON.parse(newGist);
+
+      delete newConfig.lettersSaved;
+
+      createConfig(newConfig);
       console.log('Configuration synced!');
     } catch {
       error('Something went wrong');
