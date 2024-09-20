@@ -54,8 +54,19 @@ const program = new Command()
         console.log();
       }
 
+      let lettersSavedText = 'Letters saved:';
+
+      lettersSavedText +=
+        ' '.repeat(
+          exampleHelpLine.indexOf(addCommand.description()) -
+            lettersSavedText.length
+        ) + (userConfig.lettersSaved ?? 0);
+
+      console.log(lettersSavedText);
+
+      console.log();
+
       console.log('You can use "_" to skip a optional argument');
-      console.log(`Letters saved: ${userConfig.lettersSaved ?? 0}`);
       process.exit(0);
     }
 
