@@ -1,6 +1,6 @@
-# Foji
+# Foji ⚒️
 
-Foji is a command-line interface (CLI) tool designed to help you automate and manage your coding tasks. It allows you to run custom codes and handle custom parameters.
+Foji is a powerful command-line interface (CLI) tool crafted to streamline and automate long or repetitive commands in your daily workflow. With Foji, you can define and execute custom commands, integrate custom parameters, and simplify complex processes, reducing the need to repeatedly type lengthy commands.
 
 ## Features
 
@@ -16,11 +16,13 @@ Foji is a command-line interface (CLI) tool designed to help you automate and ma
 - [x] Configuration can be downloaded from cloud
 - [x] Local configuration can be synced from cloud
 
+## System Dependencies
+
+Foji makes use of [Node.js](https://nodejs.org/) package manager to be installed.
+
 ## Installation
 
-Before installing Foji, make sure you have [Node.js](https://nodejs.org/) installed on your machine.
-
-To install Foji globally, run the following command:
+To install Foji run the following command:
 
 ```shell
 npm i foji -g
@@ -28,7 +30,7 @@ npm i foji -g
 
 ## Usage
 
-Foji saves your commands and your configuration url at it's configuration file (`~/.config/foji.json`). You can access the `.config` directory using `foji config` or open the file directly using `foji config -f` command.
+Foji saves your commands and your configurations at it's configuration file (`~/.config/foji.json`). You can access the `.config` directory using `foji config` or open the file directly using `foji config -f` command.
 
 ### Running a Command
 
@@ -37,13 +39,14 @@ To run a `command` just use:
 ```shell
 foji [command name] [...command args]
 ```
+
 Simple as that.
 
 If you don't provide a valid command name Foji will list all available commands, it includes default commands (eg.: `add`, `remove` and `sync`) and your own commands.
 
 ### Skipping a Argument
 
-You also can skip a (optional) argument using "_":
+You also can skip a (optional) argument using "\_":
 
 ```shell
 foji [command name] [argument one] _ [argument three]
@@ -96,18 +99,6 @@ All `commands` can have four types of `arguments`:
 ```
 
 Note that all `Required arguments` must be provided **BEFORE** any of the other arguments
-
-incorrect:
-
-```json
-"command": "do command <argOne?> <argTwo>"
-```
-
-correct:
-
-```json
-"command": "do command <argOne> <argTwo?>"
-```
 
 ### Remove a Command
 
