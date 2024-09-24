@@ -84,10 +84,10 @@ All `commands` can have four types of `arguments`:
 
 3. Optional arguments with default values:
 
-- Similar to optional arguments, but if not provided, they will add a default value. `<options??--ts --tailwind --src>`
+- Similar to optional arguments, but if not provided, they will add a default value. `<options ?? --ts --tailwind --src>`
 
 ```json
-"command":"echo <requiredArgumentOne> <optionalArgumentOne??My Default Value>"
+"command":"echo <requiredArgumentOne> <optionalArgumentOne ?? My Default Value>"
 ```
 
 4. Ternaries:
