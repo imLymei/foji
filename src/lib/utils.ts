@@ -15,6 +15,7 @@ type CommandArg = {
   isOptional?: boolean;
   defaultValue?: string;
   alternativeValue?: string;
+  isSpread?: boolean;
 };
 
 export const USER_DIRECTORY = os.homedir();
@@ -111,13 +112,14 @@ export function formatCommand(
 
   let allowRequired = true;
 
-  const commandArguments: CommandArg[] = commandArgs.map((arg) => {
+  const commandArguments: CommandArg[] = commandArgs.map((arg, index) => {
     const object: CommandArg = { name: '' };
 
     const hasDefaultValue = arg.includes('??');
     const hasElse = !hasDefaultValue && arg.includes(':');
     const isTernary = !hasDefaultValue && hasElse && arg.includes('?');
     const isOptional = !hasDefaultValue && !hasElse && arg.includes('?');
+    const isSpread = arg.includes('...');
 
     // TODO - make linting function
 
@@ -142,6 +144,16 @@ export function formatCommand(
       object.isOptional = true;
 
       allowRequired = false;
+    } else if (isSpread) {
+      if (index !== commandArgs.length - 1)
+        error('You can only use a spread argument at the last position');
+
+      const name = arg.replace('...', '').trim();
+      object.name = name;
+      object.isOptional = true;
+      object.isSpread = true;
+
+      allowRequired = false;
     } else {
       if (!allowRequired)
         error('You cannot have a required argument after a optional argument');
@@ -164,7 +176,10 @@ export function formatCommand(
 
   for (let index = 0; index < commandArguments.length; index++) {
     const arg = commandArguments[index];
-    let argValue = arg.alternativeValue
+
+    let argValue = arg.isSpread
+      ? args.slice(index).join(' ')
+      : arg.alternativeValue
       ? args[index]
         ? arg.defaultValue
         : arg.alternativeValue
