@@ -23,6 +23,7 @@ const program = new Command()
   .argument('[command]', 'Command that you want to run')
   .argument('[args...]', 'Arguments for the command')
   .option('-d, --debug', 'Enable debugging features', false)
+  .passThroughOptions(true)
   .action(async (commandName?: string, args?: string[]) => {
     const userConfig = getConfig();
     const configCommands = userConfig.commands;
