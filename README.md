@@ -1,176 +1,198 @@
 # Foji ⚒️
 
-Foji is a powerful command-line interface (CLI) tool crafted to streamline and automate long or repetitive commands in your daily workflow. With Foji, you can define and execute custom commands, integrate custom parameters, and simplify complex processes, reducing the need to repeatedly type lengthy commands.
+Foji is a powerful command-line interface (CLI) tool designed to streamline and automate long or repetitive commands in your daily workflow. With Foji, you can define and execute custom commands, integrate custom parameters, and simplify complex processes, reducing the need to repeatedly type lengthy commands.
 
-## Features
+## 🚀 Features
 
-- [x] Run custom codes
-- [x] Handle custom parameters
-- [x] Conditional handler for arguments
-- [x] Support for default arguments
-- [x] Support for optional arguments
-- [x] Add commands to configuration file
-- [x] Remove commands from the configuration file
-- [x] Can run commands directly
-- [x] Configuration can be saved on cloud
-- [x] Configuration can be downloaded from cloud
-- [x] Local configuration can be synced from cloud
+- [x] Run custom commands with flexible argument handling.
+- [x] Supports options, conditional, and spread arguments for advanced customization.
+- [x] Easily add, edit and remove commands in the CLI.
+- [x] Sync configuration to the cloud.
 
-## System Dependencies
+## 📦 Installation
 
-Foji makes use of [Node.js](https://nodejs.org/) package manager to be installed.
+> [!IMPORTANT]
+> Foji requires [Node.js](https://nodejs.org/) to be installed on your system. Make sure you have it installed before proceeding.
 
-## Installation
+To install Foji, run the following command:
 
-To install Foji run the following command:
-
-```shell
+```bash
 npm i foji -g
 ```
 
-## Usage
+## 🚦 Usage
 
-Foji saves your commands and your configurations at it's configuration file (`~/.config/foji.json`). You can access the `.config` directory using `foji config` or open the file directly using `foji config -f` command.
+Foji stores your commands and configurations in its configuration file (`~/.config/foji.json`). You can access it using:
+
+```bash
+foji config
+```
+
+Or open it directly:
+
+```bash
+foji config -f
+```
 
 ### Running a Command
 
-To run a `command` just use:
+To execute a saved `command`:
 
-```shell
+```bash
 foji [command name] [...command args]
 ```
 
-Simple as that.
+> [!TIP]
+> If you don’t provide a valid command name, Foji will list all available commands, including default commands like `add`, `remove`, and `sync`, along with any custom commands you've added.
 
-If you don't provide a valid command name Foji will list all available commands, it includes default commands (eg.: `add`, `remove` and `sync`) and your own commands.
+### Skipping an Argument
 
-### Skipping a Argument
+If you want to skip an optional argument, use the `_` symbol:
 
-You also can skip a (optional) argument using "\_":
-
-```shell
-foji [command name] [argument one] _ [argument three]
+```bash
+foji [command name] [arg1] _ [arg3]
 ```
 
-## Creating and Updating the Configuration
+## ⚙️ Configuration Management
 
-Foji provides easy ways to add `commands` to the configuration file (or create it if it does not exist):
+Foji allows you to easily create and update your command configurations.
 
-### Creating a New Command
+### Adding a New Command
 
-To add a new `command` to the configuration file you can use the `add` command:
+To add a new command to the configuration:
 
-```shell
+```bash
 foji add [command name] [command]
 ```
 
-All `commands` can have four types of `arguments`:
+Supported argument types:
 
-1. Required arguments:
+1. **Required Arguments**:  
+   These arguments **must** be provided for the command to run.
 
-- These arguments **must** be provided for the command to run:
+   ```json
+   "command": "echo <requiredArgumentOne> <requiredArgumentTwo>"
+   ```
 
-```json
-"command":"echo <requiredArgumentOne> <requiredArgumentTwo>"
+2. **Optional Arguments**:  
+   These arguments **are not mandatory**. If not provided, they will be skipped.
+
+   ```json
+   "command": "echo <requiredArgumentOne> <optionalArgumentOne?>"
+   ```
+
+3. **Optional Arguments with Default Values**:  
+   If not provided, a default value will be used.
+
+   ```json
+   "command": "echo <requiredArgumentOne> <optionalArgumentOne ?? My Default Value>"
+   ```
+
+4. **Ternary Arguments**:  
+   Works as a boolean argument, only checking whether it was passed.
+
+   ```json
+   "command": "echo i want pizza of <requiredArgumentOne> with <hasCheese ? cheese : no cheese>"
+   ```
+
+5. **Spread Argument**:  
+   Catches all the remaining arguments.
+
+   ```json
+   "command": "echo [<argOne>] {<argTwo...>}"
+   ```
+
+Example of usage:
+
+```bash
+foji command "my arg one" one two three --my --options
 ```
 
-2. Optional arguments:
+The resulting final command would be:
 
-- These arguments **are not** mandatory. If not provided, they will add nothing to the command.
-
-```json
-"command":"echo <requiredArgumentOne> <optionalArgumentOne?>"
+```bash
+echo [my arg one] {one two three --my --options}
 ```
 
-3. Optional arguments with default values:
+> [!IMPORTANT]  
+> **Always** provide required arguments **before** any optional ones.
 
-- Similar to optional arguments, but if not provided, they will add a default value. `<options ?? --ts --tailwind --src>`
+### Removing a Command
 
-```json
-"command":"echo <requiredArgumentOne> <optionalArgumentOne ?? My Default Value>"
+To remove a command:
+
+```bash
+foji remove [command name]
 ```
 
-4. Ternaries:
+## 🌐 Cloud Sync
 
-- These arguments function like boolean arguments. Any value passed will be ignored by the CLI; it only checks **whether the argument was passed or not**.
+You can easily sync your configurations using cloud services.
 
-```json
-"command":"echo i want pizza of <requiredArgumentOne> with <hasCheese?cheese:no cheese>"
-```
+> [!NOTE]
+> Foji uses [Github CLI](https://cli.github.com/) to create, read and update your configuration gist.
 
-Note that all `Required arguments` must be provided **BEFORE** any of the other arguments
+### Upload Configuration
 
-### Remove a Command
+To upload your configuration to a gist (or create a new gist if one doesn’t exist):
 
-To remove a `command` you can use the `remove` command
-
-```shell
-foji remove [command name] [command]
-```
-
-### Configuration File Format
-
-Foji's configuration manage your `commands` and it's `url`:
-
-```json
-{
-  "gistUrl": "https://gist.github.com/.../...",
-  "commands": {
-    "next:create": "npx create-next-app@latest <dir ?? . >",
-    "build": "npm run build:local",
-    "next:dev": "npm run dev"
-  }
-}
-```
-
-### Upload Your Configuration File
-
-To Upload your configuration to your gist (or create one if your configuration do not have yet) just run:
-
-```shell
+```bash
 foji upload
 ```
 
-### Download Your Configuration File
+### Download Configuration
 
-To download a configuration file from someone else just run this command:
+To download a configuration file from a gist:
 
-```shell
+```bash
 foji download [gist url]
 ```
 
-### Sync Your Configuration File
+### Sync Configuration
 
-Update you configuration file from it's url
+To sync your local configuration with its URL:
 
-```shell
+```bash
 foji sync
 ```
 
-## Development
+> [!CAUTION]
+> Be careful when syncing from external sources. Always verify the origin of the gist to avoid overriding your custom commands.
 
-If you want to contribute to Foji or customize it to your needs, you can clone the repository and build it yourself:
+## 🛠️ Development
+
+If you want to contribute or customize Foji, follow these steps:
 
 1. Clone the repository:
 
-```shell
-git clone https://github.com/imLymei/foji.git
-cd foji
-```
+   ```bash
+   git clone https://github.com/imLymei/foji.git
+   cd foji
+   ```
 
-2. Install the dependencies:
+2. Install dependencies:
 
-```shell
-npm install
-```
+   ```bash
+   npm install
+   ```
 
-3. Build and install the project:
+3. Build the project:
 
-```shell
-npm run build:local
-```
+   ```bash
+   npm run build:local
+   ```
 
-## License
+## 📜 Credits
+
+This project makes use of several open-source libraries and tools. Special thanks to the following:
+
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript.
+- [Commander](https://www.npmjs.com/package/commander) - CLI framework.
+- [@inquirer/prompts](https://www.npmjs.com/package/@inquirer/prompts) - Command-line prompts.
+- [semantic-release](https://www.npmjs.com/package/semantic-release) - Automates versioning and package publishing.
+- [fast-levenshtein](https://www.npmjs.com/package/fast-levenshtein) - Fast string distance algorithm.
+
+## 📄 License
 
 Foji is licensed under the MIT License.
 
