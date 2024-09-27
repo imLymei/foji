@@ -122,7 +122,8 @@ The resulting final command would be:
 echo [my arg one] {one two three --my --options}
 ```
 
-> [!IMPORTANT] > **Always** provide required arguments **before** any optional ones.
+> [!IMPORTANT]  
+> **Always** provide required arguments **before** any optional ones.
 
 ### Removing a Command
 
