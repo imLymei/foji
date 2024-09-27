@@ -123,7 +123,24 @@ export function formatCommand(
 
     // TODO - make linting function
 
-    if (hasDefaultValue) {
+    if (isSpread) {
+      if (index !== commandArgs.length - 1)
+        error('You can only use a spread argument at the last position');
+
+      let name: string;
+      let defaultValue: string;
+
+      if (hasDefaultValue)
+        [name, defaultValue] = arg.split('??').map((str) => str.trim());
+
+      name = arg.replace('...', '').trim();
+      object.name = name;
+      object.isOptional = true;
+      object.isSpread = true;
+      object.defaultValue = defaultValue;
+
+      allowRequired = false;
+    } else if (hasDefaultValue) {
       const [name, defaultValue] = arg.split('??');
       object.name = name.trim();
       object.defaultValue = defaultValue.trim();
@@ -142,16 +159,6 @@ export function formatCommand(
       const name = arg.replace('?', '').trim();
       object.name = name;
       object.isOptional = true;
-
-      allowRequired = false;
-    } else if (isSpread) {
-      if (index !== commandArgs.length - 1)
-        error('You can only use a spread argument at the last position');
-
-      const name = arg.replace('...', '').trim();
-      object.name = name;
-      object.isOptional = true;
-      object.isSpread = true;
 
       allowRequired = false;
     } else {
@@ -177,13 +184,17 @@ export function formatCommand(
   for (let index = 0; index < commandArguments.length; index++) {
     const arg = commandArguments[index];
 
-    let argValue = arg.isSpread
-      ? args.slice(index).join(' ')
-      : arg.alternativeValue
-      ? args[index]
-        ? arg.defaultValue
-        : arg.alternativeValue
-      : args[index] ?? arg.defaultValue ?? '';
+    let argValue: string;
+
+    if (arg.isSpread) {
+      argValue = args.slice(index).join(' ');
+    } else if (arg.alternativeValue) {
+      argValue = args[index] ? arg.defaultValue : arg.alternativeValue;
+    } else {
+      argValue = args[index];
+    }
+
+    if (!argValue) argValue = arg.defaultValue ?? '';
 
     splitCommand[index * 2 + 1] = argValue;
   }
