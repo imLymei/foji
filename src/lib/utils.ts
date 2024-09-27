@@ -7,6 +7,7 @@ import * as path from 'node:path';
 
 export type Config = {
   gistUrl?: string;
+  lettersSaved?: number;
   commands: { [key: string]: string };
 };
 type CommandArg = {
@@ -14,6 +15,7 @@ type CommandArg = {
   isOptional?: boolean;
   defaultValue?: string;
   alternativeValue?: string;
+  isSpread?: boolean;
 };
 
 export const USER_DIRECTORY = os.homedir();
@@ -24,10 +26,16 @@ export const HAS_CONFIGURATION = fs.existsSync(
   path.join(CONFIG_DIRECTORY, 'foji.json')
 );
 
-export function createConfig(config: Config = { commands: {} }): Config {
+export function createConfig(
+  newConfig: Config = { commands: {} },
+  useLettersSaved = false
+): Config {
   if (!HAS_CONFIGURATION) fs.mkdirSync(CONFIG_DIRECTORY, { recursive: true });
-  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(config, null, 2));
-  return config;
+
+  if (!useLettersSaved) newConfig.lettersSaved = getConfig().lettersSaved;
+
+  fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
+  return newConfig;
 }
 
 export function getConfig(): Config {
@@ -56,22 +64,20 @@ export async function addConfigCommand(key: string, command: string) {
   createConfig(newConfig);
 }
 
-export async function editConfigCommand(key: string, command: string) {
-  const newConfig: Config = getConfig();
-
-  if (!newConfig.commands[key]) error(`Command "${key}" not found`);
-
-  newConfig.commands[key] = command;
-
-  createConfig(newConfig);
-}
-
 export function changeGistUrl(newUrl: string) {
   const newConfig: Config = getConfig();
 
   newConfig.gistUrl = newUrl;
 
   createConfig(newConfig);
+}
+
+export function changeLettersSaved(letters: number) {
+  const newConfig: Config = getConfig();
+
+  newConfig.lettersSaved = (newConfig.lettersSaved ?? 0) + letters;
+
+  createConfig(newConfig, true);
 }
 
 export function logList(
@@ -106,13 +112,16 @@ export function formatCommand(
 
   let allowRequired = true;
 
-  const commandArguments: CommandArg[] = commandArgs.map((arg) => {
+  const commandArguments: CommandArg[] = commandArgs.map((arg, index) => {
     const object: CommandArg = { name: '' };
 
     const hasDefaultValue = arg.includes('??');
     const hasElse = !hasDefaultValue && arg.includes(':');
     const isTernary = !hasDefaultValue && hasElse && arg.includes('?');
     const isOptional = !hasDefaultValue && !hasElse && arg.includes('?');
+    const isSpread = arg.includes('...');
+
+    // TODO - make linting function
 
     if (hasDefaultValue) {
       const [name, defaultValue] = arg.split('??');
@@ -133,6 +142,16 @@ export function formatCommand(
       const name = arg.replace('?', '').trim();
       object.name = name;
       object.isOptional = true;
+
+      allowRequired = false;
+    } else if (isSpread) {
+      if (index !== commandArgs.length - 1)
+        error('You can only use a spread argument at the last position');
+
+      const name = arg.replace('...', '').trim();
+      object.name = name;
+      object.isOptional = true;
+      object.isSpread = true;
 
       allowRequired = false;
     } else {
@@ -157,7 +176,10 @@ export function formatCommand(
 
   for (let index = 0; index < commandArguments.length; index++) {
     const arg = commandArguments[index];
-    let argValue = arg.alternativeValue
+
+    let argValue = arg.isSpread
+      ? args.slice(index).join(' ')
+      : arg.alternativeValue
       ? args[index]
         ? arg.defaultValue
         : arg.alternativeValue
@@ -166,28 +188,22 @@ export function formatCommand(
     splitCommand[index * 2 + 1] = argValue;
   }
 
+  const finalCommand = splitCommand.join('');
+
   if (debug) {
     console.log('Command:', command);
     console.log('Command arguments:', commandArguments);
     console.log('Received arguments:', args);
-    console.log(`Formatted command: ${splitCommand.join('')}`);
+    console.log(`Formatted command: ${finalCommand}`);
     console.log();
     console.log('Running command...');
     console.log();
   }
 
-  return splitCommand.join('');
+  return finalCommand;
 }
 
-export function runUserCommand(
-  command: string,
-  args: string[],
-  debug = false
-): void {
-  command = formatCommand(command, args, debug);
-
-  if (!command) return;
-
+export function runUserCommand(command: string): void {
   const childProcess = spawn(command, {
     shell: true,
     stdio: 'inherit',
