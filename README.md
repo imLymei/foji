@@ -4,18 +4,10 @@ Foji is a powerful command-line interface (CLI) tool designed to streamline and 
 
 ## 🚀 Features
 
-- [x] Run custom codes
-- [x] Handle custom parameters
-- [x] Conditional handler for arguments
-- [x] Support for default arguments
-- [x] Support for optional arguments
-- [x] Support for options as arguments
-- [x] Add commands to a configuration file
-- [x] Remove commands from the configuration file
-- [x] Can run commands directly
-- [x] Configuration can be saved on the cloud
-- [x] Configuration can be downloaded from the cloud
-- [x] Local configuration can be synced from the cloud
+- [x] Run custom commands with flexible argument handling.
+- [x] Supports options, conditional, and spread arguments for advanced customization.
+- [x] Easily add, edit and remove commands in the CLI.
+- [x] Sync configuration to the cloud.
 
 ## 📦 Installation
 
