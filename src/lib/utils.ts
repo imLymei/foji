@@ -22,9 +22,10 @@ export const USER_DIRECTORY = os.homedir();
 export const CONFIG_DIRECTORY = path.join(USER_DIRECTORY, '.config');
 export const CONFIG_FILE_NAME = 'foji.json';
 export const CONFIG_FILE_PATH = path.join(CONFIG_DIRECTORY, CONFIG_FILE_NAME);
-export const HAS_CONFIGURATION = fs.existsSync(
-  path.join(CONFIG_DIRECTORY, 'foji.json')
-);
+export const HAS_CONFIGURATION =
+  fs.existsSync(path.join(CONFIG_DIRECTORY, 'foji.json')) &&
+  typeof (JSON.parse(fs.readFileSync(CONFIG_FILE_PATH, 'utf-8')) as Config)
+    .commands === 'object';
 
 export function createConfig(
   newConfig: Config = { commands: {} },
@@ -32,7 +33,8 @@ export function createConfig(
 ): Config {
   if (!HAS_CONFIGURATION) fs.mkdirSync(CONFIG_DIRECTORY, { recursive: true });
 
-  if (!useLettersSaved) newConfig.lettersSaved = getConfig().lettersSaved;
+  if (!useLettersSaved)
+    newConfig.lettersSaved = HAS_CONFIGURATION ? getConfig().lettersSaved : 0;
 
   fs.writeFileSync(CONFIG_FILE_PATH, JSON.stringify(newConfig, null, 2));
   return newConfig;
